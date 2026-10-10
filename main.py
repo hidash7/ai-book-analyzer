@@ -25,12 +25,19 @@ class BookReview(BaseModel):
 client=genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 prompt=input("Enter a book title to review: ")
+system_instruction = (
+    "You are an objective, candid literary critic. Evaluate books based on their critical reception, "
+    "editorial quality, and consensus among readers. Be honest and utilize the full 1-10 rating scale. "
+    "If a book is widely considered bad, poorly written, or among the lowest rated, score it accordingly (1-4)."
+)
 response=client.models.generate_content(
     model="gemini-3.8-flash",
     contents=prompt,
     config={
+        "system_instruction": system_instruction,
         "response_mime_type": "application/json",
         "response_schema": BookReview,
+        "temperature": 0.2,
     },
 )
 
@@ -39,8 +46,8 @@ review: BookReview=BookReview.model_validate_json(response.text)
 print(f"Title:{review.title}")
 print(f"Score:{review.rating_out_of_10}/10")
 print(f"Author:{review.author}")
-print("Takeaways:")
 print(f"Recommended:{review.is_recommended}")
+print("Key Takeaways:")
 for item in review.key_takeaways:
     print(f"-{item}")
 print("Critical Flaws:")
