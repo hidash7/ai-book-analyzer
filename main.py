@@ -31,7 +31,7 @@ system_instruction = (
     "If a book is widely considered bad, poorly written, or among the lowest rated, score it accordingly (1-4)."
 )
 response=client.models.generate_content(
-    model="gemini-3.8-flash",
+    model="gemini-3.5-flash-lite",
     contents=prompt,
     config={
         "system_instruction": system_instruction,

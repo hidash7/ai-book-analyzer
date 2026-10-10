@@ -44,7 +44,7 @@ if st.button("Analyze Book") and book_title:
         )
 
         response = client.models.generate_content(
-            model="gemini-3.8-flash",
+            model="gemini-3.5-flash-lite",
             contents=f"Analyze the book '{book_title}'.",
             config={
                 "system_instruction": system_instruction,
